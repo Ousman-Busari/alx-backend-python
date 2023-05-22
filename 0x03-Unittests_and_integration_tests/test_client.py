@@ -65,12 +65,14 @@ class TestGithubOrgClient(unittest.TestCase):
                             }
                         ],
         }
-        mock_get_json.return_value = test_payload
+        mock_get_json.return_value = test_payload.get("repos")
         with patch("client.GithubOrgClient._public_repos_url",
                    new_callable=PropertyMock) as mock_public_repos_url:
-            mock_public_repos_url.return_value = test_payload.get("repos")
-            self.assertEqual(GithubOrgClient("google")._public_repos_url,
-                             test_payload.get("repos"))
+            mock_public_repos_url.return_value = test_payload.get("repos_url")
+            self.assertEqual(
+                GithubOrgClient("google").public_repos(),
+                ["episodes.dart", "cpp-netlib"]
+                )
             mock_public_repos_url.assert_called_once()
         mock_get_json.assert_called_once()
 
