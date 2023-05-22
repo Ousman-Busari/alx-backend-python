@@ -35,11 +35,15 @@ class TestGithubOrgClient(unittest.TestCase):
     # ])
     def test_public_respos_url(self):
         """Test for correct outputs of _public_repos_url"""
-        with patch("client.GithubOrgClient.org",
+        with patch(
+                   "client.GithubOrgClient.org",
                    new_callable=PropertyMock) as mock_org:
-            mock_org.return_value = {"repos_url": "https://api/github.com/google/repos"}
+            mock_org.return_value = {
+                "repos_url": "https://api/github.com/google/orgs/google/repos"
+                }
             response = GithubOrgClient("google")._public_repos_url
-            self.assertEqual(response, "https://api/github.com/google/repos")
+            self.assertEqual(response,
+                             "https://api/github.com/google/orgs/google/repos")
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
@@ -75,7 +79,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             """Get url payload"""
             if url in url_payload:
                 return Mock(**{"json.return_value": url_payload[url]})
-            return HTTPError
+            return HTTPError()
 
         cls.get_patcher = patch("requests.get", side_effect=get_payload)
         cls.mocked_get = cls.get_patcher.start()
