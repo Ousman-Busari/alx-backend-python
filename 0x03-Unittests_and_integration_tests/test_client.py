@@ -101,14 +101,14 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """Setup for integration test"""
         url_payload = {
             "https://api.github.com/orgs/google": cls.org_payload,
-            "https://api.github.com/orgs/google/repo": cls.repos_payload,
+            "https://api.github.com/orgs/google/repos": cls.repos_payload,
         }
 
         def get_payload(url) -> Dict:
             """Get url payload"""
             if url in url_payload:
                 return Mock(**{"json.return_value": url_payload[url]})
-            return HTTPError()
+            return HTTPError
 
         cls.get_patcher = patch("requests.get", side_effect=get_payload)
         cls.mocked_get = cls.get_patcher.start()
