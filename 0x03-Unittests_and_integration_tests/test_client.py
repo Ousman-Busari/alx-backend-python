@@ -96,8 +96,6 @@ class TestGithubOrgClient(unittest.TestCase):
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration test: fixtures"""
-    test = GithubOrgClient("google")
-
     @classmethod
     def setUpClass(cls):
         """Setup for integration test"""
@@ -110,24 +108,25 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             """Get url payload"""
             if url in url_payload:
                 return Mock(**{"json.return_value": url_payload[url]})
-            # return HTTPError()
+            return HTTPError()
 
         cls.get_patcher = patch("requests.get", side_effect=get_payload)
         cls.mocked_get = cls.get_patcher.start()
 
     def test_public_repos(self) -> None:
         """Test public repos method of GithubOrgClient class"""
-        # test = GithubOrgClient("google")
-        self.assertEqual(self.test.public_repos(), self.expected_repos)
+        self.assertEqual(
+            GithubOrgClient("google").public_repos(),
+            self.expected_repos)
 
     def test_public_repos_with_license(self) -> None:
         """
         Test public repos method of GithubOrgClient
         class with license key
         """
-        # test = GithubOrgClient("google")
-        self.assertEqual(self.test.public_repos(license="apache-2.0"),
-                         self.apache2_repos)
+        self.assertEqual(
+            GithubOrgClient("google").public_repos(license="apache-2.0"),
+            self.apache2_repos)
 
     @classmethod
     def tearDownClass(cls) -> None:
