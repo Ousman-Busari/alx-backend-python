@@ -17,7 +17,7 @@ from unittest.mock import (
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """Test suites for GithubOtgClient"""
+    """Test cases for GithubOtgClient"""
     @parameterized.expand([
         ("google"),
         ("abc"),
@@ -110,7 +110,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             """Get url payload"""
             if url in url_payload:
                 return Mock(**{"json.return_value": url_payload[url]})
-            return HTTPError()
+            # return HTTPError()
 
         cls.get_patcher = patch("requests.get", side_effect=get_payload)
         cls.mocked_get = cls.get_patcher.start()
