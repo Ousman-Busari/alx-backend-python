@@ -30,7 +30,7 @@ class TestGithubOrgClient(unittest.TestCase):
         test.org
         mocked_get_json.assert_called_once_with(url)
 
-    def test_public_respos_url(self):
+    def test_public_repos_url(self):
         """Test for correct outputs of _public_repos_url"""
         with patch(
                    "client.GithubOrgClient.org",
