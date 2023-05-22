@@ -44,7 +44,7 @@ class TestGithubOrgClient(unittest.TestCase):
             )
 
     @patch("client.get_json")
-    def test_public_repo(self, mock_get_json: MagicMock) -> None:
+    def test_public_repos(self, mock_get_json: MagicMock) -> None:
         """test for public_repos method of GithubOrgClient class"""
         test_payload = [
             (
