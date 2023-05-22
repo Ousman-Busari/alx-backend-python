@@ -67,16 +67,14 @@ class TestMemoize(unittest.TestCase):
         """Test cases for memoize"""
         class TestClass:
             def a_method(self):
-                """returns 42"""
                 return 42
 
             @memoize
             def a_property(self) -> Callable:
-                """returns memoized property"""
                 return self.a_method()
 
-        with patch.object(TestClass, "a_method") as mock_a:
+        with patch.object(TestClass, "a_method", return_value=42) as mock_a:
             test = TestClass()
             test.a_property
             test.a_property
-            mock_a.assert_called_once
+            mock_a.assert_called_once()
