@@ -6,7 +6,10 @@ from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
 from parameterized import parameterized, parameterized_class
 from requests import HTTPError
-from typing import Dict
+from typing import (
+    Dict,
+    List
+)
 import unittest
 from unittest.mock import (
     MagicMock,
@@ -113,11 +116,12 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher = patch("requests.get", side_effect=get_payload)
         cls.mocked_get = cls.get_patcher.start()
 
-    def test_public_repos(self) -> None:
+    def test_public_repos(self) -> List[str]:
         """Test public repos method of GithubOrgClient class"""
         self.assertEqual(
             GithubOrgClient("google").public_repos(),
             self.expected_repos)
+        return 
 
     def test_public_repos_with_license(self) -> None:
         """
