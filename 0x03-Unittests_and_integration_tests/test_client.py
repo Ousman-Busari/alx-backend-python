@@ -102,7 +102,7 @@ class TestGithubOrgClient(unittest.TestCase):
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration test: fixtures"""
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         """Setup for integration test"""
         url_payload = {
             "https://api.github.com/orgs/google": cls.org_payload,
@@ -118,7 +118,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher = patch("requests.get", side_effect=get_payload)
         cls.mocked_get = cls.get_patcher.start()
 
-    def test_public_repos(self) -> List[str]:
+    def test_public_repos(self) -> None:
         """Test public repos method of GithubOrgClient class"""
         self.assertEqual(
             GithubOrgClient("google").public_repos(),
