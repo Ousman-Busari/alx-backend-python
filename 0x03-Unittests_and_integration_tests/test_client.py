@@ -121,7 +121,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         self.assertEqual(
             GithubOrgClient("google").public_repos(),
             self.expected_repos)
-        return 
+        return self.expected_repos
 
     def test_public_repos_with_license(self) -> None:
         """
