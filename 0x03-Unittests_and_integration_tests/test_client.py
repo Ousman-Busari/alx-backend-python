@@ -39,7 +39,7 @@ class TestGithubOrgClient(unittest.TestCase):
                    new_callable=PropertyMock) as mock_org:
             mock_org.return_value = {"repos_url": "https://random_repos.com"}
             response = GithubOrgClient(org_name)._public_repos_url
-            self.assertEqual(response, "https://random_repos.com"))
+            self.assertEqual(response, "https://random_repos.com")
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
