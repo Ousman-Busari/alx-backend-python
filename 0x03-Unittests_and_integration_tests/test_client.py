@@ -37,9 +37,9 @@ class TestGithubOrgClient(unittest.TestCase):
         """Test for correct outputs of _public_repos_url"""
         with patch("client.GithubOrgClient.org",
                    new_callable=PropertyMock) as mock_org:
-            mock_org.return_value = {"repos_url": "https://random_repos.com"}
+            mock_org.return_value = {"repos_url": "https://api/github.com/google/repos"}
             response = GithubOrgClient("google")._public_repos_url
-            self.assertEqual(response, "https://random_repos.com")
+            self.assertEqual(response, "https://api/github.com/google/repos")
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
