@@ -30,9 +30,6 @@ class TestGithubOrgClient(unittest.TestCase):
         test.org
         mocked_get_json.assert_called_once_with(url)
 
-    # @parameterized.expand([
-    #     ("random_org", {"repos_url": "https://random_repos.com"})
-    # ])
     def test_public_respos_url(self):
         """Test for correct outputs of _public_repos_url"""
         with patch(
@@ -41,11 +38,42 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_org.return_value = {
                 "repos_url": "https://api/github.com/orgs/google/repos"
                 }
-            # response = GithubOrgClient("google")._public_repos_url
             self.assertEqual(
                 GithubOrgClient("google")._public_repos_url,
                 "https://api/github.com/orgs/google/repos"
             )
+
+    @patch("client.get_json")
+    def test_public_repo(self, mock_get_json: MagicMock) -> None:
+        """test for public_repos method of GithubOrgClient class"""
+        test_payload = [
+            (
+                {"repos_url": "https://api.github.com/orgs/google/repos"},
+                [
+                    {
+                        "id": 7697149,
+                        "node_id": "MDEwOlJlcG9zaXRvcnk3Njk3MTQ5",
+                        "name": "episodes.dart",
+                        "full_name": "google/episodes.dart",
+                        "private": False,
+                    },
+                    {
+                        "id": 7776515,
+                        "node_id": "MDEwOlJlcG9zaXRvcnk3Nzc2NTE1",
+                        "name": "cpp-netlib",
+                        "full_name": "google/cpp-netlib",
+                        "private": False,
+                    }
+                ],
+            )
+        ]
+        mock_get_json.return_value = test_payload[0][1]
+        with patch("client.GithubOrgClient._public_repos_url",
+                   new_callable=PropertyMock) as mock_public_repos_url:
+            mock_public_repos_url.return_value = test_payload[0][0]
+            self.assertEqual(GithubOrgClient("google")._public_repos_url, test_payload[0][0])
+            mock_public_repos_url.assert_called_once()
+        mock_get_json.assert_called_once()
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
